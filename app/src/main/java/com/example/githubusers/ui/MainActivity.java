@@ -1,18 +1,20 @@
 package com.example.githubusers.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.githubusers.R;
-import com.example.githubusers.data.Users;
+import com.example.githubusers.data.User;
+
+import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,12 +30,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         userViewModelProvider = ViewModelProviders.of(this).get(UserViewModelProvider.class);
-        userViewModelProvider.getUsers().observe(this, new Observer<Users>() {
-            @Override
-            public void onChanged(Users users) {
-                adapter.setUsers(users);
-                progressDoalog.dismiss();
-            }
+        userViewModelProvider.getUsers().observe(this, users -> {
+            adapter.setUsers(users);
+            progressDoalog.dismiss();
         });
         generateUserList(userViewModelProvider.getUsers().getValue());
         progressDoalog = new ProgressDialog(MainActivity.this);
@@ -41,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
         progressDoalog.show();
     }
 
-
-    private void generateUserList(Users users) {
+    private void generateUserList(List<User> users) {
         recyclerView = findViewById(R.id.recyclerViewId);
         adapter = new UserAdapter(this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);

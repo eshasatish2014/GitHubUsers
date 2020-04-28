@@ -2,8 +2,11 @@ package com.example.githubusers.repository;
 
 import com.example.githubusers.api.GitHubUserService;
 import com.example.githubusers.api.RetrofitClient;
-import com.example.githubusers.data.Users;
+import com.example.githubusers.data.User;
 
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
@@ -11,19 +14,21 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserRepository {
-    MutableLiveData<Users> users = new MutableLiveData<>();
-    public LiveData<Users> loadUsers() {
+    private MutableLiveData<List<User>> users = new MutableLiveData<>();
+
+    public LiveData<List<User>> loadUsers() {
         GitHubUserService gitHubUserService = RetrofitClient.getRetrofitInstance().create(GitHubUserService.class);
-        Call<Users> call = gitHubUserService.getUsers();
-        call.enqueue(new Callback<Users>() {
+        Call<List<User>> call = gitHubUserService.getUsers();
+        call.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<Users> call, Response<Users> response) {
+            public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
                 users.setValue(response.body());
             }
+
             @Override
-            public void onFailure(Call<Users> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
             }
         });
-      return users;
+        return users;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.githubusers.data;
 
-public class Item {
+public class User {
     private String login;
     private float id;
     private String node_id;
@@ -19,8 +19,6 @@ public class Item {
     private String received_events_url;
     private String type;
     private boolean site_admin;
-    private float score;
-
 
     // Getter Methods
 
@@ -96,10 +94,6 @@ public class Item {
         return site_admin;
     }
 
-    public float getScore() {
-        return score;
-    }
-
     // Setter Methods
 
     public void setLogin(String login) {
@@ -173,9 +167,4 @@ public class Item {
     public void setSite_admin(boolean site_admin) {
         this.site_admin = site_admin;
     }
-
-    public void setScore(float score) {
-        this.score = score;
-    }
 }
-

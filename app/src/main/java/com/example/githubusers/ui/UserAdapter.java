@@ -9,24 +9,27 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.githubusers.R;
-import com.example.githubusers.data.Users;
+import com.example.githubusers.data.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.CustomViewHolder> {
 
-    private Users users;
+    private List<User> users;
     private Context context;
 
-    public UserAdapter(Context context) {
+    UserAdapter(Context context) {
         this.context = context;
-        this.users = new Users();
+        this.users = new ArrayList<>();
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        public View mView;
-
+        private View mView;
         private TextView txtTitle;
         private ImageView imageView;
 
@@ -39,7 +42,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.CustomViewHold
     }
 
     @Override
-    public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public @NonNull CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.gituser_row_item, parent, false);
         return new CustomViewHolder(view);
@@ -47,17 +50,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.CustomViewHold
 
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
-        holder.txtTitle.setText(users.getItems().get(position).getLogin());
-        Glide.with(context).load(users.getItems().get(position).getAvatar_url()).into(holder.imageView);
+        holder.txtTitle.setText(users.get(position).getLogin());
+        Glide.with(context).load(users.get(position).getAvatar_url()).into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return users.getItems().size();
+        return users.size();
     }
 
-    public void setUsers(Users users){
-        if(users!=null) {
+    void setUsers(List<User> users) {
+        if (users != null) {
             this.users = users;
             notifyDataSetChanged();
         }
