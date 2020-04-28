@@ -5,20 +5,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.githubusers.R;
 import com.example.githubusers.data.Users;
-import com.example.githubusers.api.GitHubUserService;
-import com.example.githubusers.api.RetrofitClientInstance;
 
 public class MainActivity extends AppCompatActivity {
 

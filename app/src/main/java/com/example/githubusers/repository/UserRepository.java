@@ -1,7 +1,7 @@
 package com.example.githubusers.repository;
 
 import com.example.githubusers.api.GitHubUserService;
-import com.example.githubusers.api.RetrofitClientInstance;
+import com.example.githubusers.api.RetrofitClient;
 import com.example.githubusers.data.Users;
 
 import androidx.lifecycle.LiveData;
@@ -13,7 +13,7 @@ import retrofit2.Response;
 public class UserRepository {
     MutableLiveData<Users> users = new MutableLiveData<>();
     public LiveData<Users> loadUsers() {
-        GitHubUserService gitHubUserService = RetrofitClientInstance.getRetrofitInstance().create(GitHubUserService.class);
+        GitHubUserService gitHubUserService = RetrofitClient.getRetrofitInstance().create(GitHubUserService.class);
         Call<Users> call = gitHubUserService.getUsers();
         call.enqueue(new Callback<Users>() {
             @Override
