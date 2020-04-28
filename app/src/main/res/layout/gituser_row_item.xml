@@ -18,8 +18,7 @@
         app:layout_constraintEnd_toStartOf="@+id/imageViewId"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageViewId"
-        tools:text="    nncvbcvbncvbbcvbcvcvc" />
+        app:layout_constraintTop_toTopOf="@+id/imageViewId" />
 
     <ImageView
         android:id="@+id/imageViewId"
