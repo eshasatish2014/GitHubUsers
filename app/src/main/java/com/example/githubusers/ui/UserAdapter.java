@@ -17,7 +17,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.CustomViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private List<User> users;
     private Context context;
@@ -27,13 +27,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.CustomViewHold
         this.users = new ArrayList<>();
     }
 
-    class CustomViewHolder extends RecyclerView.ViewHolder {
+    class UserViewHolder extends RecyclerView.ViewHolder {
 
         private View mView;
         private TextView txtTitle;
         private ImageView imageView;
 
-        CustomViewHolder(View itemView) {
+        UserViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             txtTitle = mView.findViewById(R.id.loginId);
@@ -42,14 +42,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.CustomViewHold
     }
 
     @Override
-    public @NonNull CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public @NonNull UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.gituser_row_item, parent, false);
-        return new CustomViewHolder(view);
+        return new UserViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, int position) {
+    public void onBindViewHolder(UserViewHolder holder, int position) {
         holder.txtTitle.setText(users.get(position).getLogin());
         Glide.with(context).load(users.get(position).getAvatar_url()).into(holder.imageView);
     }

@@ -11,7 +11,6 @@ import com.example.githubusers.data.User;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private void generateUserList(List<User> users) {
         recyclerView = findViewById(R.id.recyclerViewId);
         adapter = new UserAdapter(this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         recyclerView.setAdapter(adapter);
     }
 }
