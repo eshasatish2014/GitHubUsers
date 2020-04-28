@@ -12,27 +12,12 @@ import retrofit2.Response;
 
 public class UserRepository {
     MutableLiveData<Users> users = new MutableLiveData<>();
-    /*public void loadUsers() {
-        GitHubUserService gitHubUserService = RetrofitClientInstance.getRetrofitInstance().create(GitHubUserService.class);
-        Call<Users> call = gitHubUserService.getUsers();
-        call.enqueue(new Callback<Users>() {
-            @Override
-            public void onResponse(Call<Users> call, Response<Users> response) {
-               setValue(response.body());
-            }
-            @Override
-            public void onFailure(Call<Users> call, Throwable t) {
-            }
-        });
-    }*/
-
     public LiveData<Users> loadUsers() {
         GitHubUserService gitHubUserService = RetrofitClientInstance.getRetrofitInstance().create(GitHubUserService.class);
         Call<Users> call = gitHubUserService.getUsers();
         call.enqueue(new Callback<Users>() {
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {
-                //setValue(response.body());
                 users.setValue(response.body());
             }
             @Override

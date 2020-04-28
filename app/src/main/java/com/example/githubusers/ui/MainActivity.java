@@ -33,9 +33,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressDoalog = new ProgressDialog(MainActivity.this);
-        progressDoalog.setMessage("Loading....");
-        progressDoalog.show();
         userViewModelProvider = ViewModelProviders.of(this).get(UserViewModelProvider.class);
         userViewModelProvider.getUsers().observe(this, new Observer<Users>() {
             @Override
@@ -45,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         generateUserList(userViewModelProvider.getUsers().getValue());
+        progressDoalog = new ProgressDialog(MainActivity.this);
+        progressDoalog.setMessage("Loading....");
+        progressDoalog.show();
     }
 
 
