@@ -12,12 +12,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 public class UserViewModelProvider extends AndroidViewModel {
-    private UserRepository userRepository;
     private LiveData<List<User>> users;
 
     public UserViewModelProvider(@NonNull Application application) {
         super(application);
-        userRepository = new UserRepository();
+        UserRepository userRepository = new UserRepository();
         users = userRepository.loadUsers();
     }
 

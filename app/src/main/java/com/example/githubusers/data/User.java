@@ -1,5 +1,12 @@
 package com.example.githubusers.data;
 
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.example.githubusers.R;
+
+import androidx.databinding.BindingAdapter;
+
 public class User {
     private String login;
     private float id;
@@ -166,5 +173,10 @@ public class User {
 
     public void setSite_admin(boolean site_admin) {
         this.site_admin = site_admin;
+    }
+
+    @BindingAdapter("imageUrl")
+    public static void loadImage(ImageView imageView, String inmageUrl){
+        Glide.with(imageView.getContext()).load(inmageUrl).placeholder(R.drawable.ic_launcher_background).into(imageView);
     }
 }

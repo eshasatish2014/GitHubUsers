@@ -2,56 +2,46 @@ package com.example.githubusers.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.githubusers.R;
 import com.example.githubusers.data.User;
+import com.example.githubusers.databinding.GituserRowItemBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private List<User> users;
-    private Context context;
 
-    UserAdapter(Context context) {
-        this.context = context;
+    UserAdapter() {
         this.users = new ArrayList<>();
     }
 
     class UserViewHolder extends RecyclerView.ViewHolder {
+        private GituserRowItemBinding rowItemBinding;
 
-        private View mView;
-        private TextView txtTitle;
-        private ImageView imageView;
-
-        UserViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-            txtTitle = mView.findViewById(R.id.loginId);
-            imageView = mView.findViewById(R.id.imageViewId);
+        UserViewHolder(@NonNull GituserRowItemBinding rowItemBinding) {
+            super(rowItemBinding.getRoot());
+            this.rowItemBinding = rowItemBinding;
         }
     }
 
     @Override
-    public @NonNull UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.gituser_row_item, parent, false);
-        return new UserViewHolder(view);
+    public @NonNull
+    UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        GituserRowItemBinding rowItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.gituser_row_item, parent, false);
+        return new UserViewHolder(rowItemBinding);
     }
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
-        holder.txtTitle.setText(users.get(position).getLogin());
-        Glide.with(context).load(users.get(position).getAvatar_url()).into(holder.imageView);
+        holder.rowItemBinding.setUser(users.get(position));
     }
 
     @Override
