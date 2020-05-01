@@ -4,10 +4,10 @@ import com.example.githubusers.data.User;
 
 import java.util.List;
 
-import retrofit2.Call;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 
 public interface GitHubUserService {
     @GET("users")
-    Call<List<User>> getUsers();
+    Observable<List<User>> getUsers();
 }

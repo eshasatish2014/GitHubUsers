@@ -1,6 +1,5 @@
-package com.example.githubusers.ui;
+package com.example.githubusers.ui.users;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -23,7 +22,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         this.users = new ArrayList<>();
     }
 
-    class UserViewHolder extends RecyclerView.ViewHolder {
+    static class UserViewHolder extends RecyclerView.ViewHolder {
         private GituserRowItemBinding rowItemBinding;
 
         UserViewHolder(@NonNull GituserRowItemBinding rowItemBinding) {

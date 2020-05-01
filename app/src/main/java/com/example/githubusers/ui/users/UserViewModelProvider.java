@@ -1,4 +1,4 @@
-package com.example.githubusers.ui;
+package com.example.githubusers.ui.users;
 
 import android.app.Application;
 
@@ -13,10 +13,11 @@ import androidx.lifecycle.LiveData;
 
 public class UserViewModelProvider extends AndroidViewModel {
     private LiveData<List<User>> users;
+    private UserRepository userRepository;
 
     public UserViewModelProvider(@NonNull Application application) {
         super(application);
-        UserRepository userRepository = new UserRepository();
+        userRepository = new UserRepository();
         users = userRepository.loadUsers();
     }
 
