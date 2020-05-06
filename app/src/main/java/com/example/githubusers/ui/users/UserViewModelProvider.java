@@ -10,6 +10,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class UserViewModelProvider extends AndroidViewModel {
     private LiveData<List<User>> users;
@@ -17,11 +18,18 @@ public class UserViewModelProvider extends AndroidViewModel {
 
     public UserViewModelProvider(@NonNull Application application) {
         super(application);
-        userRepository = new UserRepository();
-        users = userRepository.loadUsers();
+        users = new MutableLiveData<>();
+        userRepository = new UserRepository(application);
+        userRepository.loadUsers((MutableLiveData<List<User>>) users);
     }
 
-    LiveData<List<User>> getUsers() {
+    public LiveData<List<User>> getUsers() {
         return users;
+    }
+
+    @Override
+    public void onCleared() {
+        super.onCleared();
+        userRepository.getCompositeDisposable().dispose();
     }
 }

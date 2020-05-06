@@ -5,26 +5,50 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.githubusers.R;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "User")
 public class User {
+    @PrimaryKey
+    @NonNull
+    private int id;
+    @ColumnInfo
     private String login;
-    private float id;
+    @ColumnInfo
     private String node_id;
+    @ColumnInfo
     private String avatar_url;
+    @ColumnInfo
     private String gravatar_id;
+    @ColumnInfo
     private String url;
+    @ColumnInfo
     private String html_url;
+    @ColumnInfo
     private String followers_url;
+    @ColumnInfo
     private String following_url;
+    @ColumnInfo
     private String gists_url;
+    @ColumnInfo
     private String starred_url;
+    @ColumnInfo
     private String subscriptions_url;
+    @ColumnInfo
     private String organizations_url;
+    @ColumnInfo
     private String repos_url;
+    @ColumnInfo
     private String events_url;
+    @ColumnInfo
     private String received_events_url;
+    @ColumnInfo
     private String type;
+    @ColumnInfo
     private boolean site_admin;
 
     // Getter Methods
@@ -33,7 +57,7 @@ public class User {
         return login;
     }
 
-    public float getId() {
+    public int getId() {
         return id;
     }
 
@@ -107,7 +131,7 @@ public class User {
         this.login = login;
     }
 
-    public void setId(float id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -176,7 +200,7 @@ public class User {
     }
 
     @BindingAdapter("imageUrl")
-    public static void loadImage(ImageView imageView, String inmageUrl){
+    public static void loadImage(ImageView imageView, String inmageUrl) {
         Glide.with(imageView.getContext()).load(inmageUrl).placeholder(R.drawable.ic_launcher_background).into(imageView);
     }
 }
