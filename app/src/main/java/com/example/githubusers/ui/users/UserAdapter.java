@@ -1,5 +1,6 @@
 package com.example.githubusers.ui.users;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -12,13 +13,16 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+public class UserAdapter extends PagedListAdapter<User,UserAdapter.UserViewHolder> {
 
     private List<User> users;
 
-    UserAdapter() {
+    protected UserAdapter() {
+        super(DIFF_CALLBACK);
         this.users = new ArrayList<>();
     }
 
@@ -54,4 +58,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             notifyDataSetChanged();
         }
     }
+
+    private static DiffUtil.ItemCallback<User> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<User>() {
+                // Concert details may have changed if reloaded from the database,
+                // but ID is fixed.
+                @Override
+                public boolean areItemsTheSame(User oldUser, User newUser) {
+                    return oldUser.getId() == newUser.getId();
+                }
+
+                @Override
+                public boolean areContentsTheSame(User oldUser,
+                                                  User newUser) {
+                    return oldUser.equals(newUser);
+                }
+            };
 }

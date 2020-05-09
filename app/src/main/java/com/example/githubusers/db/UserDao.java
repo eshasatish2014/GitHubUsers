@@ -4,6 +4,7 @@ import com.example.githubusers.data.User;
 
 import java.util.List;
 
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -20,6 +21,6 @@ public interface UserDao {
     Single<Integer> deleteAll(List<User> user);
 
     @Query("SELECT * FROM User")
-    public List<User> loadAllUsers();
+    public  DataSource.Factory<Integer, User> getUsers();
 
 }

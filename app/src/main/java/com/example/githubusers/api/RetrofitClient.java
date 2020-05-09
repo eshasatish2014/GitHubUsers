@@ -8,16 +8,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
     private static Retrofit retrofit;
     private static final String BASE_URL = "https://api.github.com/";
+    private static RetrofitClient instance;
 
-    public static Retrofit getRetrofitInstance() {
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client( new OkHttpClient.Builder().build())
-                    .build();
+    private RetrofitClient(){
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(new OkHttpClient.Builder().build())
+                .build();
+    }
+
+    public static RetrofitClient getInstance() {
+        if (instance == null) {
+            instance = new RetrofitClient();
         }
-        return retrofit;
+        return instance;
+    }
+
+    public GitHubUserService getApi() {
+        return retrofit.create(GitHubUserService.class);
     }
 }

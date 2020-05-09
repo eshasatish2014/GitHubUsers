@@ -15,27 +15,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog progressDoalog;
-    private UserAdapter adapter;
     private ActivityMainBinding mActivityMainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        mActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        //setting up recyclerview
+        mActivityMainBinding.recyclerViewId.setLayoutManager(new LinearLayoutManager(this));
+        mActivityMainBinding.recyclerViewId.setHasFixedSize(true);
+
         UserViewModelProvider userViewModelProvider = new ViewModelProvider(this).get(UserViewModelProvider.class);
-        userViewModelProvider.getUsers().observe(this, users -> {
-            adapter.setUsers(users);
+        UserAdapter adapter = new UserAdapter();
+
+        userViewModelProvider.getUserPagedList().observe(this, pagedList -> {
+            adapter.submitList(pagedList);
             progressDoalog.dismiss();
         });
-        generateUserList();
+        mActivityMainBinding.recyclerViewId.setAdapter(adapter);
         progressDoalog = new ProgressDialog(this);
         progressDoalog.setMessage("Loading....");
         progressDoalog.show();
-    }
-
-    private void generateUserList() {
-        mActivityMainBinding.recyclerViewId.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new UserAdapter();
-        mActivityMainBinding.recyclerViewId.setAdapter(adapter);
     }
 }
