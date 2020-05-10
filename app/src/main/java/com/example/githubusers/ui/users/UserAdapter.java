@@ -19,11 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class UserAdapter extends PagedListAdapter<User,UserAdapter.UserViewHolder> {
 
-    private List<User> users;
-
     protected UserAdapter() {
         super(DIFF_CALLBACK);
-        this.users = new ArrayList<>();
     }
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
@@ -44,19 +41,7 @@ public class UserAdapter extends PagedListAdapter<User,UserAdapter.UserViewHolde
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
-        holder.rowItemBinding.setUser(users.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return users.size();
-    }
-
-    void setUsers(List<User> users) {
-        if (users != null) {
-            this.users = users;
-            notifyDataSetChanged();
-        }
+        holder.rowItemBinding.setUser(getItem(position));
     }
 
     private static DiffUtil.ItemCallback<User> DIFF_CALLBACK =
