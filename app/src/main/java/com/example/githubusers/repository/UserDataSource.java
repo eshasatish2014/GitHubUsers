@@ -48,7 +48,7 @@ public class UserDataSource extends PageKeyedDataSource<Integer, User> {
     public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, User> callback) {
         compositeDisposable.add(RetrofitClient.getInstance()
                 .getApi()
-                .getUsers(since)
+                .getUsers(params.key)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(users -> {

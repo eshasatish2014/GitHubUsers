@@ -19,26 +19,14 @@ import androidx.paging.PagedList;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class UserViewModelProvider extends AndroidViewModel {
-    //private LiveData<List<User>> users;
-    //private UserRepository userRepository;
     private LiveData<PagedList<User>> userPagedList;
-    private UserDataSourceFactory userDataSourceFactory;
+    private UserRepository userRepository;
 
     public UserViewModelProvider(@NonNull Application application) {
         super(application);
-        //users = new MutableLiveData<>();
-        //userRepository = new UserRepository(application);
-        //userRepository.loadUsers((MutableLiveData<List<User>>) users);
-        userDataSourceFactory = new UserDataSourceFactory();
-        PagedList.Config config = (new PagedList.Config.Builder())
-                .setEnablePlaceholders(false)
-                .setPageSize(UserDataSource.PAGE_SIZE).build();
-        userPagedList = (new LivePagedListBuilder<Integer,User>(userDataSourceFactory, config)).build();
+        userRepository = new UserRepository(application);
+        userPagedList = userRepository.getUserPagedList();
     }
-
-    /*LiveData<List<User>> getUsers() {
-        return users;
-    }*/
 
     public LiveData<PagedList<User>> getUserPagedList() {
         return userPagedList;
@@ -47,6 +35,6 @@ public class UserViewModelProvider extends AndroidViewModel {
     @Override
     public void onCleared() {
         super.onCleared();
-        userDataSourceFactory.getCompositeDisposable().dispose();
+        userRepository.getCompositeDisposable().dispose();
     }
 }

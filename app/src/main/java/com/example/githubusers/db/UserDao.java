@@ -15,10 +15,10 @@ import io.reactivex.Single;
 @Dao
 public interface UserDao {
     @Insert
-    Completable insert(List<User> user);
+    void insert(List<User> user);
 
     @Delete
-    Single<Integer> deleteAll(List<User> user);
+    void deleteAll(List<User> user);
 
     @Query("SELECT * FROM User")
     public  DataSource.Factory<Integer, User> getUsers();
