@@ -11,6 +11,8 @@ import com.example.githubusers.databinding.GituserRowItemBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.paging.PagedListAdapter;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class UserAdapter extends PagedListAdapter<User,UserAdapter.UserViewHolder> {
 
+    @Inject
     protected UserAdapter() {
         super(DIFF_CALLBACK);
     }
@@ -46,8 +49,6 @@ public class UserAdapter extends PagedListAdapter<User,UserAdapter.UserViewHolde
 
     private static DiffUtil.ItemCallback<User> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<User>() {
-                // Concert details may have changed if reloaded from the database,
-                // but ID is fixed.
                 @Override
                 public boolean areItemsTheSame(User oldUser, User newUser) {
                     return oldUser.getId() == newUser.getId();

@@ -1,11 +1,11 @@
 package com.example.githubusers.repository;
 
-import android.app.Application;
-
+import com.example.githubusers.api.GitHubUserService;
 import com.example.githubusers.api.RetrofitClient;
 import com.example.githubusers.data.User;
 import com.example.githubusers.db.UserDao;
-import com.example.githubusers.db.UserDatabase;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -15,14 +15,13 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class UserRepository {
-    private UserDao userdao;
+    private CompositeDisposable compositeDisposable;
     private final LiveData<PagedList<User>> userPagedList;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private static final int PAGE_SIZE = 30;
+    public static final int PAGE_SIZE = 30;
 
     //Network Only Pagination
-    public UserRepository() {
-        UserDataSourceFactory userDataSourceFactory = new UserDataSourceFactory();
+    //@Inject
+    public UserRepository(UserDataSourceFactory userDataSourceFactory) {
         PagedList.Config config = (new PagedList.Config.Builder())
                 .setEnablePlaceholders(false)
                 .setPageSize(PAGE_SIZE).build();
@@ -32,26 +31,20 @@ public class UserRepository {
 
     //Database + Network Pagination
     //Network data is paged into the database, database is paged into UI
-    public UserRepository(Application application) {
-        UserDatabase db = UserDatabase.getDatabase(application);
-        userdao = db.userDao();
-
-        PagedList.Config config = (new PagedList.Config.Builder())
-                .setEnablePlaceholders(false)
-                .setPageSize(PAGE_SIZE).build();
-
+    @Inject
+    public UserRepository(UserDao userdao, PagedList.Config config,CompositeDisposable compositeDisposable,GitHubUserService gitHubUserService) {
+        this.compositeDisposable = compositeDisposable;
         userPagedList = new LivePagedListBuilder<>(
-                userdao.getUsers(), config).setBoundaryCallback(createBoundaryCallback()).build();
+                userdao.getUsers(), config).setBoundaryCallback(createBoundaryCallback(userdao,compositeDisposable,gitHubUserService)).build();
     }
 
     //Trigger network call when DataSource runs out of data
-    private PagedList.BoundaryCallback<User> createBoundaryCallback() {
+    private PagedList.BoundaryCallback<User> createBoundaryCallback(UserDao userdao,CompositeDisposable compositeDisposable,GitHubUserService gitHubUserService) {
         return new PagedList.BoundaryCallback<User>() {
             @Override
             public void onZeroItemsLoaded() {
                 super.onZeroItemsLoaded();
-                compositeDisposable.add(RetrofitClient.getInstance()
-                        .getApi()
+                compositeDisposable.add(gitHubUserService
                         .getUsers(0)
                         .subscribeOn(Schedulers.io())
                         .subscribe(userdao::insert));
@@ -60,8 +53,7 @@ public class UserRepository {
             @Override
             public void onItemAtEndLoaded(@NonNull User itemAtEnd) {
                 super.onItemAtEndLoaded(itemAtEnd);
-                compositeDisposable.add(RetrofitClient.getInstance()
-                        .getApi()
+                compositeDisposable.add(gitHubUserService
                         .getUsers(itemAtEnd.getId())
                         .subscribeOn(Schedulers.io())
                         .subscribe(userdao::insert));

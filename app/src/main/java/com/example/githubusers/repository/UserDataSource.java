@@ -1,7 +1,10 @@
 package com.example.githubusers.repository;
 
-import com.example.githubusers.api.RetrofitClient;
+import com.example.githubusers.api.GitHubUserService;
 import com.example.githubusers.data.User;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PageKeyedDataSource;
@@ -14,15 +17,17 @@ public class UserDataSource extends PageKeyedDataSource<Integer, User> {
     private static final int FIRST_PAGE = 1;
     public static final int PAGE_SIZE = 30;
     private CompositeDisposable compositeDisposable;
+    private GitHubUserService gitHubUserService;
 
-    UserDataSource(CompositeDisposable compositeDisposable) {
+    @Inject
+    UserDataSource(CompositeDisposable compositeDisposable, GitHubUserService gitHubUserService) {
         this.compositeDisposable = compositeDisposable;
+        this.gitHubUserService = gitHubUserService;
     }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, User> callback) {
-        compositeDisposable.add(RetrofitClient.getInstance()
-                .getApi()
+        compositeDisposable.add(gitHubUserService
                 .getUsers(since)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -33,8 +38,7 @@ public class UserDataSource extends PageKeyedDataSource<Integer, User> {
 
     @Override
     public void loadBefore(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, User> callback) {
-        compositeDisposable.add(RetrofitClient.getInstance()
-                .getApi()
+        compositeDisposable.add(gitHubUserService
                 .getUsers(params.key)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -46,8 +50,7 @@ public class UserDataSource extends PageKeyedDataSource<Integer, User> {
 
     @Override
     public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, User> callback) {
-        compositeDisposable.add(RetrofitClient.getInstance()
-                .getApi()
+        compositeDisposable.add(gitHubUserService
                 .getUsers(params.key)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
